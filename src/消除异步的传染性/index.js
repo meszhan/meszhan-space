@@ -1,11 +1,3 @@
-# 消除异步的传染性
-
-## 什么是异步的传染性
-
-异步的传染性指的是如果一个函数调用的函数是异步的，那么这个函数也是异步的，以此类推，这个异步函数上层调用链上的所有函数都是异步的。
-看下面这个例子：
-
-```javascript
 async function getUser() {
     return await fetch('').then((resp) => resp.json())
 }
@@ -21,23 +13,7 @@ async function m2() {
 async function main() {
     return await m2();
 }
-```
 
-对于普通的函数调用，这或许并不是很重要，但是在函数式编程中，这会导致函数调用链上所有纯函数因为异步而受到影响。
-
-## 消除异步
-
-消除异步的第一步当然就是去掉异步的来源`getUser`方法中的异步，让`getUser`方法能立即返回结果
-
-```
-async function getUser() {
-    return await fetch('').then((resp) => resp.json())
-}
-```
-
-那么如何让一个异步函数能立即返回结果呢，答案就是**报错**，也就是立即抛出错误
-
-```javascript
 function run(func) {
     let cache = [];
     let i = 0;
@@ -83,25 +59,3 @@ function run(func) {
 }
 
 run(main)
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
